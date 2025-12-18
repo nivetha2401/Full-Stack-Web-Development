@@ -1,0 +1,134 @@
+import React, { useState } from "react";
+
+const TaskDashboard = () => {
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = () => {
+    if (task.trim() === "") return;
+    setTasks([...tasks, { id: Date.now(), text: task }]);
+    setTask("");
+  };
+
+  const removeTask = (id) => {
+    setTasks(tasks.filter((t) => t.id !== id));
+  };
+
+  return (
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Task List Dashboard</h2>
+
+        <div style={styles.inputSection}>
+          <input
+            type="text"
+            placeholder="Enter a new task..."
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            style={styles.input}
+          />
+          <button onClick={addTask} style={styles.addBtn}>
+            Add Task
+          </button>
+        </div>
+
+        {tasks.length === 0 ? (
+          <p style={styles.empty}>No tasks added yet</p>
+        ) : (
+          <ul style={styles.list}>
+            {tasks.map((t) => (
+              <li key={t.id} style={styles.listItem}>
+                <span>{t.text}</span>
+                <button
+                  onClick={() => removeTask(t.id)}
+                  style={styles.deleteBtn}
+                >
+                  ✖
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: "linear-gradient(to right, #667eea, #764ba2)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  card: {
+    background: "#fff",
+    padding: "25px",
+    borderRadius: "10px",
+    width: "90%",
+    maxWidth: "500px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+  },
+
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+    color: "#333",
+  },
+
+  inputSection: {
+    display: "flex",
+    gap: "10px",
+    marginBottom: "20px",
+  },
+
+  input: {
+    flex: 1,
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
+
+  addBtn: {
+    padding: "10px 15px",
+    border: "none",
+    borderRadius: "5px",
+    background: "#667eea",
+    color: "white",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+
+  empty: {
+    textAlign: "center",
+    color: "gray",
+  },
+
+  list: {
+    listStyle: "none",
+    padding: 0,
+  },
+
+  listItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px",
+    marginBottom: "10px",
+    background: "#f5f5f5",
+    borderRadius: "5px",
+  },
+
+  deleteBtn: {
+    background: "#e74c3c",
+    border: "none",
+    color: "white",
+    borderRadius: "5px",
+    padding: "5px 10px",
+    cursor: "pointer",
+  },
+};
+
+export default TaskDashboard;
